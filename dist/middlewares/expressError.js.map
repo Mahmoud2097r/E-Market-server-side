@@ -1,0 +1,1 @@
+{"version":3,"file":"expressError.js","sourceRoot":"","sources":["../../src/middlewares/expressError.ts"],"names":[],"mappings":";;AAAA,MAAM,YAAa,SAAQ,KAAK;IAC/B,YACQ,OAAe,EACf,UAAkB;QAEzB,KAAK,EAAE,CAAC;QAHD,YAAO,GAAP,OAAO,CAAQ;QACf,eAAU,GAAV,UAAU,CAAQ;IAG1B,CAAC;CACD;AAED,kBAAe,YAAY,CAAC"}
