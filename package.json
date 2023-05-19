@@ -4,7 +4,6 @@
   "description": "E-Market is an e-commerce app built with react anyone can sell their products",
   "main": "dist/server.js",
   "scripts": {
-    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "npx tsc",
     "server": "nodemon dist/server.js",
     "dev": "concurrently \"npx tsc --watch\" \"npm run server\"",

@@ -111,9 +111,9 @@ export const deleteReview = async (
 		await review?.deleteOne();
 
 		const productsReviews = await Review.find({
-			product: product,
+			product,
 		});
-		const usersReviews = await Review.find({ user: user });
+		const usersReviews = await Review.find({ user });
 
 		product!.reviews = productsReviews;
 		user.reviews = usersReviews;

@@ -36,5 +36,6 @@ app.use((err, req, res, next) => {
         title: `Error: ${statusCode}`,
     });
 });
-app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
+app.listen(PORT);
+// app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
 //# sourceMappingURL=server.js.map

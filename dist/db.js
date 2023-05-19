@@ -19,10 +19,8 @@ const connectDB = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         mongoose_1.default.set('strictQuery', false);
         const connect = yield mongoose_1.default.connect((_a = process.env.MONGODB_URL) !== null && _a !== void 0 ? _a : '');
-        console.log(`MONGODB CONNECTED: ${connect.connection.host}`);
     }
     catch (e) {
-        console.log(e.message);
         process.exit(1);
     }
 });

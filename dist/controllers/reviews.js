@@ -21,14 +21,16 @@ const postReview = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     var _a, _b, _c;
     try {
         const { product_id } = req.params;
-        const product = yield product_1.default.findById(product_id).populate('reviews').exec();
+        const product = yield product_1.default.findById(product_id)
+            .populate('reviews')
+            .exec();
         const { body, rating } = req.body.review;
         const user = yield user_1.default.findById(req.body.user_id);
         const haveReviewed = (_a = product === null || product === void 0 ? void 0 : product.reviews) === null || _a === void 0 ? void 0 : _a.filter((review) => {
             return user === null || user === void 0 ? void 0 : user.equals(review.user);
         }).length;
         if (haveReviewed > 0)
-            throw new Error('You can\'t add more than one review');
+            throw new Error("You can't add more than one review");
         if (body === '' &&
             rating === '' &&
             body == null &&
@@ -51,7 +53,6 @@ const postReview = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         res.status(200).send();
     }
     catch (e) {
-        console.log(e);
         next(new expressError_1.default(e.message, 404));
     }
 });
@@ -62,7 +63,9 @@ const patchReview = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         const { user_id, review } = req.body;
         const { body, rating } = review;
         const user = yield user_1.default.findById(user_id);
-        const updatedReview = yield review_1.default.findById(review_id).populate('user').exec();
+        const updatedReview = yield review_1.default.findById(review_id)
+            .populate('user')
+            .exec();
         if (!(user === null || user === void 0 ? void 0 : user.equals(updatedReview === null || updatedReview === void 0 ? void 0 : updatedReview.user)))
             throw new Error('Not Authorized');
         if (body)
@@ -73,7 +76,6 @@ const patchReview = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         res.status(200).send();
     }
     catch (e) {
-        console.log(e.message);
         next(new expressError_1.default(e.message, 404));
     }
 });
@@ -83,13 +85,17 @@ const deleteReview = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         const { review_id, product_id } = req.params;
         const { user_id } = req.body;
         const user = yield user_1.default.findById(user_id);
-        const review = yield review_1.default.findById(review_id).populate('user').exec();
+        const review = yield review_1.default.findById(review_id)
+            .populate('user')
+            .exec();
         const product = yield product_1.default.findById(product_id);
         if (!(user === null || user === void 0 ? void 0 : user.equals(review === null || review === void 0 ? void 0 : review.user)))
             throw new Error('Not Authorized');
         yield (review === null || review === void 0 ? void 0 : review.deleteOne());
-        const productsReviews = yield review_1.default.find({ product: product });
-        const usersReviews = yield review_1.default.find({ user: user });
+        const productsReviews = yield review_1.default.find({
+            product,
+        });
+        const usersReviews = yield review_1.default.find({ user });
         product.reviews = productsReviews;
         user.reviews = usersReviews;
         yield (product === null || product === void 0 ? void 0 : product.save());
@@ -97,7 +103,6 @@ const deleteReview = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         res.status(200).send();
     }
     catch (e) {
-        console.log(e.message);
         next(new expressError_1.default(e.message, 404));
     }
 });

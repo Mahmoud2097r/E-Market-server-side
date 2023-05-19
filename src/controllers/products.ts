@@ -36,7 +36,7 @@ export const postProduct = async (
 		if (req.files) {
 			const files = req.files as IFile[];
 			req.body.images = [];
-			for (let file of files) {
+			for (const file of files) {
 				req.body.images.push({
 					filename: file.filename,
 					path: file.path,
@@ -94,7 +94,7 @@ export const postProduct = async (
 
 		res.send(newProduct);
 	} catch (e: any) {
-		for (let file of req.files as IFile[]) {
+		for (const file of req.files as IFile[]) {
 			deleteImage(file.filename);
 		}
 		next(new ExpressError(e.message, 400));
@@ -157,13 +157,13 @@ export const editProduct = async (
 		if (req.files) {
 			const files = req.files as IFile[];
 			req.body.images = [];
-			for (let file of files) {
+			for (const file of files) {
 				req.body.images.push({
 					filename: file.filename,
 					path: file.path,
 				});
 			}
-			for (let image of product?.images as IFile[]) {
+			for (const image of product?.images as IFile[]) {
 				deleteImage(image.filename);
 			}
 		}
@@ -185,7 +185,7 @@ export const editProduct = async (
 
 		res.send(product);
 	} catch (e: any) {
-		for (let image of req.body.images) {
+		for (const image of req.body.images) {
 			deleteImage(image.filename);
 		}
 		next(new ExpressError(e.message, 400));
@@ -218,7 +218,7 @@ export const deleteProduct = async (
 			next,
 		);
 
-		for (let image of product?.images as IFile[]) {
+		for (const image of product?.images as IFile[]) {
 			await deleteImage(image.filename);
 		}
 

@@ -48,7 +48,6 @@ const postShoppingCart = (req, res, next) => __awaiter(void 0, void 0, void 0, f
         res.status(200).send(shoppingCart);
     }
     catch (e) {
-        console.log(e);
         if (e.statusCode === 400)
             next(new expressError_1.default('404 Page Not Found', 404));
         next(new expressError_1.default('Sorry, Something went wrong try again later!', 404));
@@ -74,7 +73,6 @@ const updateShoppingCart = (req, res, next) => __awaiter(void 0, void 0, void 0,
         res.status(200).send(shoppingCart);
     }
     catch (e) {
-        console.log(e.message);
         if (e.statusCode === 400)
             next(new expressError_1.default('404 Page Not Found', 404));
         next(new expressError_1.default('Sorry, Something went wrong try again later!', 404));

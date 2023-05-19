@@ -54,7 +54,7 @@ const signup = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
                 email: user.email,
                 _id: user._id,
                 image: (_a = user.image) === null || _a === void 0 ? void 0 : _a.path,
-            }
+            },
         });
     }
     catch (e) {
@@ -111,7 +111,6 @@ const logout = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
         res.status(200).send('logged out successfully');
     }
     catch (e) {
-        console.log(e.message);
         next(new expressError_1.default(e.message, 400));
     }
 });
@@ -188,7 +187,6 @@ const getUsersProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, f
         res.send(user === null || user === void 0 ? void 0 : user.products);
     }
     catch (e) {
-        console.log(e.message);
         next(new expressError_1.default('Something went wrong!', 400));
     }
 });
@@ -211,7 +209,6 @@ const deleteUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         res.status(200).send();
     }
     catch (e) {
-        console.log(e.message);
         next(new expressError_1.default(e.message, 404));
     }
 });
@@ -227,7 +224,6 @@ const getProfileOwner = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
         res.status(200).send(profileOwner);
     }
     catch (e) {
-        console.log(e.message);
         next(new expressError_1.default(e.message, 404));
     }
 });

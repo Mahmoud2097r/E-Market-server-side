@@ -23,7 +23,6 @@ const getProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         res.send(products);
     }
     catch (e) {
-        console.log(e.message);
         next(new expressError_1.default('Something went wrong!', 400));
     }
 });
@@ -33,7 +32,7 @@ const postProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         if (req.files) {
             const files = req.files;
             req.body.images = [];
-            for (let file of files) {
+            for (const file of files) {
                 req.body.images.push({
                     filename: file.filename,
                     path: file.path,
@@ -42,7 +41,8 @@ const postProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         }
         const { user_id, name, price, stock, description, images, } = req.body;
         const filterLettersRegrex = /[A-Za-z.!/@#%&*`~+?^${}()|[\]\\]/g;
-        if (price.search(filterLettersRegrex) !== -1 || stock.search(filterLettersRegrex) !== -1) {
+        if (price.search(filterLettersRegrex) !== -1 ||
+            stock.search(filterLettersRegrex) !== -1) {
             throw new Error('stock/price must be a number');
         }
         if (user_id == null || user_id === '')
@@ -71,10 +71,9 @@ const postProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         res.send(newProduct);
     }
     catch (e) {
-        for (let file of req.files) {
+        for (const file of req.files) {
             (0, middlewares_1.deleteImage)(file.filename);
         }
-        console.log(e.message);
         next(new expressError_1.default(e.message, 400));
     }
 });
@@ -87,15 +86,14 @@ const showProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             options: { sort: { _id: -1 } },
             populate: {
                 path: 'user',
-                model: 'User'
-            }
+                model: 'User',
+            },
         });
         product.avgRating = (0, middlewares_1.calcAvgRating)(product);
         yield (product === null || product === void 0 ? void 0 : product.save());
         res.send(product);
     }
     catch (e) {
-        console.log(e.message);
         next(new expressError_1.default('404 - Page Not Found', 404));
     }
 });
@@ -105,20 +103,21 @@ const editProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         const { user_id, name, price, stock, description } = req.body;
         const { product_id } = req.params;
         const filterLettersRegrex = /[A-Za-z.!/@#%&*`~+?^${}()|[\]\\]/g;
-        if (price.search(filterLettersRegrex) !== -1 || stock.search(filterLettersRegrex) !== -1) {
+        if (price.search(filterLettersRegrex) !== -1 ||
+            stock.search(filterLettersRegrex) !== -1) {
             next(new expressError_1.default('stock/price must be a number', 404));
         }
         const product = yield product_1.default.findById(product_id);
         if (req.files) {
             const files = req.files;
             req.body.images = [];
-            for (let file of files) {
+            for (const file of files) {
                 req.body.images.push({
                     filename: file.filename,
                     path: file.path,
                 });
             }
-            for (let image of product === null || product === void 0 ? void 0 : product.images) {
+            for (const image of product === null || product === void 0 ? void 0 : product.images) {
                 (0, middlewares_1.deleteImage)(image.filename);
             }
         }
@@ -137,8 +136,7 @@ const editProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         res.send(product);
     }
     catch (e) {
-        console.log(e.message);
-        for (let image of req.body.images) {
+        for (const image of req.body.images) {
             (0, middlewares_1.deleteImage)(image.filename);
         }
         next(new expressError_1.default(e.message, 400));
@@ -156,7 +154,7 @@ const deleteProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         const product = yield product_1.default.findById(id);
         const productOwner = yield user_1.default.findById(product === null || product === void 0 ? void 0 : product.user._id);
         (0, middlewares_1.isUserAuthorized)(userId, product === null || product === void 0 ? void 0 : product.user._id, next);
-        for (let image of product === null || product === void 0 ? void 0 : product.images) {
+        for (const image of product === null || product === void 0 ? void 0 : product.images) {
             yield (0, middlewares_1.deleteImage)(image.filename);
         }
         yield (product === null || product === void 0 ? void 0 : product.deleteOne());
@@ -168,7 +166,6 @@ const deleteProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         res.status(200).send();
     }
     catch (e) {
-        console.log(e.message);
         next(new expressError_1.default('Something went wrong!', 400));
     }
 });
