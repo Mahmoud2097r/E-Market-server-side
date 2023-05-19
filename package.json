@@ -1,0 +1,50 @@
+{
+  "name": "e-market",
+  "version": "1.0.0",
+  "description": "E-Market is an e-commerce app built with react anyone can sell their products",
+  "main": "dist/server.js",
+  "scripts": {
+    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
+    "build": "npx tsc",
+    "server": "nodemon dist/server.js",
+    "dev": "concurrently \"npx tsc --watch\" \"npm run server\"",
+    "start": "node dist/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mahmoud2097r/E-Market.git"
+  },
+  "author": "mahmoud alsaht",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mahmoud2097r/E-Market/issues"
+  },
+  "homepage": "https://github.com/Mahmoud2097r/E-Market#readme",
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/express-session": "^1.17.6",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/mongoose": "^5.11.97",
+    "@types/multer-s3": "^3.0.0",
+    "@types/node": "^18.13.0",
+    "autoprefixer": "^10.4.13",
+    "concurrently": "^7.6.0",
+    "dotenv": "^16.0.3",
+    "ts-node": "^10.9.1",
+    "tslint": "^6.1.3"
+  },
+  "dependencies": {
+    "@types/connect-mongodb-session": "^2.4.4",
+    "bcrypt": "^5.1.0",
+    "cloudinary": "^1.32.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
+    "express-mongo-sanitize": "^2.2.0",
+    "mongoose": "^6.9.1",
+    "multer": "^1.4.5-lts.1",
+    "multer-storage-cloudinary": "^4.0.0"
+  }
+}
