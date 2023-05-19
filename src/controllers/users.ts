@@ -11,15 +11,16 @@ export const signup = async (
 ) => {
 	try {
 		const { username, email, password } = req.body;
-		const emailRegex = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
-		const usernameRegrex = /[.&*+?^${}()|[\]\\]/g
+		const emailRegex =
+			/^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
+		const usernameRegrex = /[.&*+?^${}()|[\]\\]/g;
 
 		if (username.search(usernameRegrex) !== -1) {
-			next(new ExpressError('Invalid username', 404))
+			next(new ExpressError('Invalid username', 404));
 		}
 
 		if (!emailRegex.test(email)) {
-			next(new ExpressError('Invalid email', 404))
+			next(new ExpressError('Invalid email', 404));
 		}
 
 		if (
@@ -30,7 +31,12 @@ export const signup = async (
 			password == null ||
 			password === ''
 		) {
-			next(new ExpressError('Please fill all required fields', 404))
+			next(
+				new ExpressError(
+					'Please fill all required fields',
+					404,
+				),
+			);
 		}
 
 		if (req.file) {
@@ -53,7 +59,7 @@ export const signup = async (
 				email: user.email,
 				_id: user._id,
 				image: user.image?.path,
-			}
+			},
 		});
 	} catch (e: unknown | any) {
 		deleteImage(req.body.image?.filename);
@@ -71,10 +77,10 @@ export const login = async (
 	try {
 		const { username, password } = req.body;
 
-		const usernameRegrex = /[.&*+?^${}()|[\]\\]/g
+		const usernameRegrex = /[.&*+?^${}()|[\]\\]/g;
 
 		if (username.search(usernameRegrex) !== -1) {
-			next(new ExpressError('Invalid username', 404))
+			next(new ExpressError('Invalid username', 404));
 		}
 
 		if (
@@ -93,7 +99,6 @@ export const login = async (
 		const user = await User.find({ username }).populate({
 			path: 'products',
 		});
-
 
 		if (user == null) throw new Error();
 
@@ -125,10 +130,10 @@ export const logout = async (
 ) => {
 	try {
 		const { id } = req.body;
-		const idRegrex = /[.&*+?^${}()|[\]\\]/g
+		const idRegrex = /[.&*+?^${}()|[\]\\]/g;
 
 		if (id.search(idRegrex) !== -1) {
-			next(new ExpressError('Invalid credentials', 404))
+			next(new ExpressError('Invalid credentials', 404));
 		}
 
 		if (id == null || id === '')
@@ -136,7 +141,6 @@ export const logout = async (
 
 		res.status(200).send('logged out successfully');
 	} catch (e: unknown | any) {
-		console.log(e.message);
 		next(new ExpressError(e.message, 400));
 	}
 };
@@ -162,15 +166,16 @@ export const update = async (
 			image,
 		} = req.body;
 
-		const emailRegex = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
-		const usernameRegrex = /[.&*+?^${}()|[\]\\]/g
+		const emailRegex =
+			/^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
+		const usernameRegrex = /[.&*+?^${}()|[\]\\]/g;
 
 		if (username.search(usernameRegrex) !== -1) {
-			next(new ExpressError('Invalid username', 404))
+			next(new ExpressError('Invalid username', 404));
 		}
 
 		if (!emailRegex.test(email)) {
-			next(new ExpressError('Invalid email', 404))
+			next(new ExpressError('Invalid email', 404));
 		}
 
 		if (currentPassword == null || currentPassword === '') {
@@ -246,7 +251,6 @@ export const getUsersProducts = async (
 
 		res.send(user?.products);
 	} catch (e: any) {
-		console.log(e.message);
 		next(new ExpressError('Something went wrong!', 400));
 	}
 };
@@ -284,27 +288,28 @@ export const deleteUser = async (
 		await user?.deleteOne();
 		res.status(200).send();
 	} catch (e: any) {
-		console.log(e.message);
 		next(new ExpressError(e.message, 404));
 	}
 };
 
-export const getProfileOwner = async (req: Request, res: Response, next: NextFunction) => {
+export const getProfileOwner = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
 	try {
-		const { profile_id } = req.body
+		const { profile_id } = req.body;
 
-		const profile_idRegrex = /[.&*+?^${}()|[\]\\]/g
+		const profile_idRegrex = /[.&*+?^${}()|[\]\\]/g;
 
 		if (profile_id.search(profile_idRegrex) !== -1) {
-			next(new ExpressError('Invalid credentials', 404))
+			next(new ExpressError('Invalid credentials', 404));
 		}
 
+		const profileOwner = await User.findById(profile_id);
 
-		const profileOwner = await User.findById(profile_id)
-
-		res.status(200).send(profileOwner)
+		res.status(200).send(profileOwner);
 	} catch (e: any) {
-		console.log(e.message)
-		next(new ExpressError(e.message, 404))
+		next(new ExpressError(e.message, 404));
 	}
-}
+};

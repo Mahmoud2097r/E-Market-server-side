@@ -1,8 +1,12 @@
 import { config } from 'dotenv';
-if (process.env.NODE_ENV !== 'production') config()
+if (process.env.NODE_ENV !== 'production') config();
 const { PORT } = process.env;
 
-import express, { Response, Request, NextFunction } from 'express'
+import express, {
+	Response,
+	Request,
+	NextFunction,
+} from 'express';
 import { connectDB } from './db';
 import cors from 'cors';
 import usersRouter from './routes/users';
@@ -19,9 +23,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({ origin: '*' }));
 app.use(
-    mongoSanitize({
-        replaceWith: '_',
-    }),
+	mongoSanitize({
+		replaceWith: '_',
+	}),
 );
 
 app.use('/users/api', usersRouter);
@@ -30,20 +34,20 @@ app.use('/shopping-cart', shoppingCartRouter);
 app.use('/products/:product_id/reviews', reviewsRouter);
 
 app.use(
-    (
-        err: any,
-        req: Request,
-        res: Response,
-        next: NextFunction,
-    ) => {
-        const { statusCode = 500 } = err;
-        if (!err.message) err.message = 'Something Went Wrong!';
-        res.status(statusCode).send({
-            err,
-            title: `Error: ${statusCode}`,
-        });
-    },
+	(
+		err: any,
+		req: Request,
+		res: Response,
+		next: NextFunction,
+	) => {
+		const { statusCode = 500 } = err;
+		if (!err.message) err.message = 'Something Went Wrong!';
+		res.status(statusCode).send({
+			err,
+			title: `Error: ${statusCode}`,
+		});
+	},
 );
 
-app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
-
+app.listen(PORT);
+// app.listen(PORT, () => console.log(`http://localhost:${PORT}`));

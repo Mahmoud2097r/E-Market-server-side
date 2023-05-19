@@ -2,7 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import Product from '../models/product';
 import User from '../models/user';
 import ExpressError from '../middlewares/expressError';
-import { deleteImage, isUserAuthorized, calcAvgRating } from '../middlewares';
+import {
+	deleteImage,
+	isUserAuthorized,
+	calcAvgRating,
+} from '../middlewares';
 
 export const getProducts = async (
 	req: Request,
@@ -14,7 +18,6 @@ export const getProducts = async (
 
 		res.send(products);
 	} catch (e: any) {
-		console.log(e.message);
 		next(new ExpressError('Something went wrong!', 400));
 	}
 };
@@ -49,10 +52,14 @@ export const postProduct = async (
 			images,
 		} = req.body;
 
-		const filterLettersRegrex = /[A-Za-z.!/@#%&*`~+?^${}()|[\]\\]/g
+		const filterLettersRegrex =
+			/[A-Za-z.!/@#%&*`~+?^${}()|[\]\\]/g;
 
-		if (price.search(filterLettersRegrex) !== -1 || stock.search(filterLettersRegrex) !== -1) {
-			throw new Error('stock/price must be a number')
+		if (
+			price.search(filterLettersRegrex) !== -1 ||
+			stock.search(filterLettersRegrex) !== -1
+		) {
+			throw new Error('stock/price must be a number');
 		}
 
 		if (user_id == null || user_id === '')
@@ -90,7 +97,6 @@ export const postProduct = async (
 		for (let file of req.files as IFile[]) {
 			deleteImage(file.filename);
 		}
-		console.log(e.message);
 		next(new ExpressError(e.message, 400));
 	}
 };
@@ -102,20 +108,21 @@ export const showProduct = async (
 ) => {
 	try {
 		const { product_id } = req.params;
-		const product = await Product.findById(product_id).populate({
+		const product = await Product.findById(
+			product_id,
+		).populate({
 			path: 'reviews',
 			options: { sort: { _id: -1 } },
 			populate: {
 				path: 'user',
-				model: 'User'
-			}
+				model: 'User',
+			},
 		});
-		product!.avgRating = calcAvgRating(product!)
+		product!.avgRating = calcAvgRating(product!);
 
-		await product?.save()
+		await product?.save();
 		res.send(product);
 	} catch (e: any) {
-		console.log(e.message);
 		next(new ExpressError('404 - Page Not Found', 404));
 	}
 };
@@ -130,10 +137,19 @@ export const editProduct = async (
 			req.body;
 		const { product_id } = req.params;
 
-		const filterLettersRegrex = /[A-Za-z.!/@#%&*`~+?^${}()|[\]\\]/g
+		const filterLettersRegrex =
+			/[A-Za-z.!/@#%&*`~+?^${}()|[\]\\]/g;
 
-		if (price.search(filterLettersRegrex) !== -1 || stock.search(filterLettersRegrex) !== -1) {
-			next(new ExpressError('stock/price must be a number', 404))
+		if (
+			price.search(filterLettersRegrex) !== -1 ||
+			stock.search(filterLettersRegrex) !== -1
+		) {
+			next(
+				new ExpressError(
+					'stock/price must be a number',
+					404,
+				),
+			);
 		}
 
 		const product = await Product.findById(product_id);
@@ -169,7 +185,6 @@ export const editProduct = async (
 
 		res.send(product);
 	} catch (e: any) {
-		console.log(e.message);
 		for (let image of req.body.images) {
 			deleteImage(image.filename);
 		}
@@ -219,7 +234,6 @@ export const deleteProduct = async (
 
 		res.status(200).send();
 	} catch (e: any) {
-		console.log(e.message);
 		next(new ExpressError('Something went wrong!', 400));
 	}
 };
